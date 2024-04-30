@@ -8,15 +8,19 @@ import com.example.demo.model.Student;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+
 public interface StudentService {
 
-    public void addStudent(Student student);
+	public void addStudent(Student student);
 
-    public List<Student> getAllStudents();
+	public List<Student> getAllStudents();
 
-    public String editStudent(long studentId, EditStudentDTO newData);
+	public String editStudent(long studentId, EditStudentDTO newData);
 
-    public String deleteStudent(long studentId);
+	public String deleteStudent(long studentId);
 
-    DatatableStudentResponseDTO getStudentDatatableResponseData(DatatableRequestDTO datatableRequestDTO);
+	DatatableStudentResponseDTO getStudentDatatableResponseData(DatatableRequestDTO datatableRequestDTO);
+
+	JSONObject getStudentDatatableResponseDataShivam(DatatableRequestDTO datatableRequestDTO);
 }

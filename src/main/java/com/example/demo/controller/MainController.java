@@ -6,6 +6,8 @@ import com.example.demo.DTO.DatatableDTOs.DatatableStudentResponseDTO;
 import com.example.demo.DTO.EditStudentDTO;
 import com.example.demo.model.Student;
 import com.example.demo.services.StudentService;
+
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,46 +17,55 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/api")
 public class MainController {
 
-    @Autowired
-    StudentService studentService;
+	@Autowired
+	StudentService studentService;
 
-    @GetMapping("/allStudent")
-    public ResponseEntity<ApiResponse> allStudent() {
-        return ResponseEntity.ok(new ApiResponse(true,"Success",studentService.getAllStudents()));
-    }
+	@GetMapping("/allStudent")
+	public ResponseEntity<ApiResponse> allStudent() {
+		return ResponseEntity.ok(new ApiResponse(true, "Success", studentService.getAllStudents()));
+	}
 
-    @GetMapping("/index")
-    public ModelAndView index(){
-        ModelAndView m1 = new ModelAndView("students");
-        System.err.println("Entered in index");
-        return m1;
-    }
+	@GetMapping("/index")
+	public ModelAndView index() {
+		ModelAndView m1 = new ModelAndView("shivam");
+		System.err.println("Entered in index");
+		return m1;
+	}
 
-    @PostMapping("/datatable")
-    @ResponseBody
-    public ResponseEntity<ApiResponse> allStudentDatatable(@RequestBody DatatableRequestDTO datatableRequestDTO) {
-        DatatableStudentResponseDTO dto = studentService.getStudentDatatableResponseData(datatableRequestDTO);
-        if(dto!=null){
-            return ResponseEntity.ok(new ApiResponse(true,"Success",dto));
-        }else {
-            return ResponseEntity.ok(new ApiResponse(false,"Error","No data found"));
-        }
-    }
+	@PostMapping("/datatable")
+	@ResponseBody
+	public ResponseEntity<ApiResponse> allStudentDatatable(@RequestBody DatatableRequestDTO datatableRequestDTO) {
+		DatatableStudentResponseDTO dto = studentService.getStudentDatatableResponseData(datatableRequestDTO);
+		if (dto != null) {
+			return ResponseEntity.ok(new ApiResponse(true, "Success", dto));
+		} else {
+			return ResponseEntity.ok(new ApiResponse(false, "Error", "No data found"));
+		}
+	}
 
-    @PostMapping("/addStudent")
-    public ResponseEntity<ApiResponse> addStudent(@RequestBody Student student) {
-        studentService.addStudent(student);
-        return ResponseEntity.ok(new ApiResponse(true,"Success",studentService.getAllStudents()));
-    }
+	@PostMapping("/shivam/datatable")
+	public JSONObject allStudentDatatableShivam(
+			@RequestBody DatatableRequestDTO databDatatableRequestDTO) {
+		JSONObject dto = studentService
+				.getStudentDatatableResponseDataShivam(databDatatableRequestDTO);
+		return dto;
+	}
 
-    @PostMapping("/editStudent")
-    public ResponseEntity<ApiResponse> editStudent(@RequestParam("studId") long studId,@RequestBody EditStudentDTO editStudent) {
-        return ResponseEntity.ok(new ApiResponse(true,"Success",studentService.editStudent(studId,editStudent)));
-    }
+	@PostMapping("/addStudent")
+	public ResponseEntity<ApiResponse> addStudent(@RequestBody Student student) {
+		studentService.addStudent(student);
+		return ResponseEntity.ok(new ApiResponse(true, "Success", studentService.getAllStudents()));
+	}
 
-    @PostMapping("/deleteStudent")
-    public ResponseEntity<ApiResponse> deleteStudent(@RequestParam("studId") long studId) {
-        studentService.deleteStudent(studId);
-        return ResponseEntity.ok(new ApiResponse(true,"Success",studentService.getAllStudents()));
-    }
+	@PostMapping("/editStudent")
+	public ResponseEntity<ApiResponse> editStudent(@RequestParam("studId") long studId,
+			@RequestBody EditStudentDTO editStudent) {
+		return ResponseEntity.ok(new ApiResponse(true, "Success", studentService.editStudent(studId, editStudent)));
+	}
+
+	@PostMapping("/deleteStudent")
+	public ResponseEntity<ApiResponse> deleteStudent(@RequestParam("studId") long studId) {
+		studentService.deleteStudent(studId);
+		return ResponseEntity.ok(new ApiResponse(true, "Success", studentService.getAllStudents()));
+	}
 }
