@@ -102,40 +102,31 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public JSONObject getStudentDatatableResponseDataShivam(DatatableRequestDTO datatableRequestDTO) {
-		// TODO Auto-generated method stub
+		String searchValue = StringUtils.defaultString(datatableRequestDTO.getSearchValue(), "");
 		int start = Integer.parseInt(StringUtils.defaultIfBlank(String.valueOf(datatableRequestDTO.getStart()), "0"));
-		int length = Integer
-				.parseInt(StringUtils.defaultIfBlank(String.valueOf(datatableRequestDTO.getLength()), "10"));
+		int length = Integer.parseInt(StringUtils.defaultIfBlank(String.valueOf(datatableRequestDTO.getLength()), "10"));
 		int draw = Integer.parseInt(StringUtils.defaultIfBlank(String.valueOf(datatableRequestDTO.getDraw()), "0"));
-		int totalLength = studentRepo.findCountOfTotalStudentDatatableShivam();
-		if (totalLength > 0) {
-			List<AllStudentsDatatableDTO> data = studentRepo.findStudentDatatableDataShivam(length, start);
 
-//			DatatableStudentResponseDTO dto = new DatatableStudentResponseDTO();
-//			dto.setData(data);
-//			dto.setDraw(draw);
-//			dto.setError(null);
-//			dto.setRecordsFiltered(totalLength);
-//			dto.setRecordsTotal(totalLength);
-//			dto.setDatatableMetaDTO(new DatatableMetaDTO(start / length, (int) Math.ceil(totalLength / (double) length),
-//					length, totalLength));
-//			System.err.println(dto);
+		int totalLength = studentRepo.countStudentData(searchValue);
+		if (totalLength > 0) {
+			List<AllStudentsDatatableDTO> data = studentRepo.findStudentDatatableData(searchValue, length, start);
+
 			JSONObject jsonMainObject = new JSONObject();
-			JSONObject jsonMataObject = new JSONObject();
+			JSONObject jsonMetaObject = new JSONObject();
+
 			double totalRecords = totalLength;
-//			jsonMainObject.put("draw", Integer.parseInt(allRequestParams.get("draw")));
+
 			jsonMainObject.put("recordsFiltered", totalRecords);
 			jsonMainObject.put("recordsTotal", totalRecords);
 			jsonMainObject.put("data", data);
 
-//			System.err.println(list);
 			int page = start / length;
-			jsonMataObject.put("page", page);
-			jsonMataObject.put("pages", Math.ceil((totalRecords) / length));
-			jsonMataObject.put("perpage", length);
-			jsonMataObject.put("total", totalRecords);
+			jsonMetaObject.put("page", page);
+			jsonMetaObject.put("pages", Math.ceil((totalRecords) / length));
+			jsonMetaObject.put("perpage", length);
+			jsonMetaObject.put("total", totalRecords);
 
-			jsonMainObject.put("meta", jsonMataObject);
+			jsonMainObject.put("meta", jsonMetaObject);
 
 			return jsonMainObject;
 		} else {

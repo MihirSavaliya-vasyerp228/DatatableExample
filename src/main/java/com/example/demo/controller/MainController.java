@@ -44,10 +44,8 @@ public class MainController {
 	}
 
 	@PostMapping("/shivam/datatable")
-	public JSONObject allStudentDatatableShivam(
-			@RequestBody DatatableRequestDTO databDatatableRequestDTO) {
-		JSONObject dto = studentService
-				.getStudentDatatableResponseDataShivam(databDatatableRequestDTO);
+	public JSONObject allStudentDatatableShivam(@RequestBody DatatableRequestDTO databDatatableRequestDTO) {
+		JSONObject dto = studentService.getStudentDatatableResponseDataShivam(databDatatableRequestDTO);
 		return dto;
 	}
 

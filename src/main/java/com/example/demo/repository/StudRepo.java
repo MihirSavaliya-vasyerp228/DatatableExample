@@ -24,9 +24,15 @@ public interface StudRepo extends JpaRepository<Student, Long> {
 			+ "          LOWER(student.phone) LIKE LOWER(CONCAT('%',:searchValue,'%'))) ELSE 1 = 1 END", nativeQuery = true)
 	int countStudentData(@Param("searchValue") String searchValue);
 
-	@Query(value = "SELECT\n" + "    student.first_name as firstName,\n" + "    student.last_name as lastName,\n"
-			+ "    student.email as email,\n" + "    student.gender as gender,\n" + "    student.phone as phone,\n"
-			+ "    student.city as city\n" + "FROM student\n" + "WHERE CASE WHEN '' != :searchValue\n"
+	@Query(value = "SELECT\n"
+			+ "    student.first_name as firstName,\n"
+			+ "    student.last_name as lastName,\n"
+			+ "    student.email as email,\n"
+			+ "    student.gender as gender,\n"
+			+ "    student.phone as phone,\n"
+			+ "    student.city as city\n"
+			+ "FROM student\n"
+			+ "WHERE CASE WHEN '' != :searchValue\n"
 			+ "    THEN (LOWER(student.first_name) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR\n"
 			+ "          LOWER(student.email) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR\n"
 			+ "          LOWER(student.last_name) LIKE LOWER(CONCAT('%', :searchValue, '%')) OR\n"
@@ -34,15 +40,5 @@ public interface StudRepo extends JpaRepository<Student, Long> {
 			+ "          LOWER(student.gender) LIKE LOWER(CONCAT('%',:searchValue,'%')) OR\n"
 			+ "          LOWER(student.phone) LIKE LOWER(CONCAT('%',:searchValue,'%'))) ELSE 1 = 1 END\n"
 			+ "LIMIT :length OFFSET :offset", nativeQuery = true)
-	List<AllStudentsDatatableDTO> findStudentDatatableData(@Param("searchValue") String searchValue,
-			@Param("length") int length, @Param("offset") int offset);
-
-	@Query(value = "SELECT\n" + "    student.first_name as firstName,\n" + "    student.last_name as lastName,\n"
-			+ "    student.email as email,\n" + "    student.gender as gender,\n" + "    student.phone as phone,\n"
-			+ "    student.city as city\n" + "    FROM student \n", nativeQuery = true)
-	List<AllStudentsDatatableDTO> findStudentDatatableDataShivam(@Param("length") Integer length,
-			@Param("offset") Integer offset);
-
-	@Query(value = "select count(*) from student", nativeQuery = true)
-	Integer findCountOfTotalStudentDatatableShivam();
+	List<AllStudentsDatatableDTO> findStudentDatatableData(@Param("searchValue") String searchValue, @Param("length") int length, @Param("offset") int offset);
 }
